@@ -79,49 +79,75 @@
     top: 0;
     z-index: 20;
     padding: 1.25rem 0;
-    background: transparent;
-    border-bottom: 1px solid transparent;
     backdrop-filter: blur(10px);
-    transition: padding .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
   }
-  .topbar::before {
-    content: "";
-    position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(10,110,209,.08) 50%, transparent 100%);
-    opacity: 0;
-    transition: opacity .25s ease;
-    pointer-events: none;
-  }
-  .topbar .wrap {
-    position: relative; z-index: 1;
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-    transition: transform .25s ease;
-  }
-  .topbar.scrolled {
-    padding: .7rem 0;
-    background: color-mix(in srgb, var(--surface) 84%, transparent);
-    border-color: var(--line);
-    box-shadow: 0 12px 24px rgba(14, 26, 43, .08);
-  }
-  .topbar.scrolled::before { opacity: 1; }
-  .topbar.scrolled .wrap { transform: translateY(0); }
+  .topbar .wrap { display: flex; align-items: center; justify-content: flex-start; gap: 1rem; flex-wrap: wrap; position: relative; }
   .mark {
     display: inline-grid; place-items: center;
-    width: 2.5rem; height: 2.5rem; border-radius: 10px;
-    background: var(--accent); color: var(--accent-ink);
-    font-weight: 700; font-size: .95rem; letter-spacing: .02em; text-decoration: none;
-    box-shadow: 0 12px 24px rgba(10,110,209,.18);
-    transition: transform .25s ease, box-shadow .25s ease, border-radius .25s ease;
+    width: 2.75rem; height: 2.75rem; border-radius: 12px;
+    background: var(--soft); color: var(--accent);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(10, 110, 209, .08);
   }
-  .topbar.scrolled .mark {
-    transform: scale(.92) rotate(-4deg);
-    border-radius: 8px;
-    box-shadow: 0 8px 18px rgba(10,110,209,.16);
+  .menu-toggle {
+    display: none;
+    width: 2.75rem; height: 2.75rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: 10px;
+    padding: 0.55rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.28rem;
+    margin-left: auto;
   }
-  .topbar nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .menu-toggle span {
+    display: block;
+    width: 1.25rem;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  .menu-toggle.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .menu-toggle.is-open span:nth-child(2) { opacity: 0; }
+  .menu-toggle.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .mark svg {
+    width: 1.55rem; height: 1.55rem; display: block;
+  }
+  .mark svg .frame {
+    fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .mark svg .bridge {
+    fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round;
+  }
+  .mark-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    color: var(--ink);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  .mark-name.is-visible {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mark-name { transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s; }
+    .mark-name.is-visible { transition: opacity .25s ease, transform .25s ease, visibility 0s; }
+  }
+  .topbar nav { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-left: auto; }
   .topbar nav a {
     position: relative; color: var(--muted); text-decoration: none; font-weight: 500; font-size: .98rem;
-    transition: color .2s ease, transform .2s ease, letter-spacing .2s ease;
+    transition: color .2s ease, transform .2s ease;
   }
   .topbar nav a::after {
     content: ""; position: absolute; left: 0; bottom: -.32rem; width: 100%; height: 2px;
@@ -130,7 +156,6 @@
   }
   .topbar nav a:hover, .topbar nav a.is-active { color: var(--ink); transform: translateY(-1px); }
   .topbar nav a:hover::after, .topbar nav a.is-active::after { transform: scaleX(1); opacity: 1; }
-  .topbar.scrolled nav a { letter-spacing: .01em; }
 
   @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
@@ -268,6 +293,63 @@
     main section.block .wrap, .contact-band .wrap { grid-template-columns: 1fr; gap: 1.25rem; }
     .facts { grid-template-columns: 1fr; gap: 1rem; }
     .skills .row { grid-template-columns: 1fr; gap: .25rem; }
+
+    .menu-toggle {
+      display: inline-flex;
+      position: fixed;
+      right: max(1rem, env(safe-area-inset-right));
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      margin: 0;
+      z-index: 50;
+      box-shadow: 0 10px 24px rgba(14, 26, 43, 0.18);
+    }
+    footer { padding-bottom: 5.5rem; }
+    .topbar nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(78vw, 320px);
+      height: 100vh;
+      margin: 0;
+      padding: 5.5rem 1.25rem 1.5rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(11, 18, 32, 0.97);
+      border-left: 1px solid var(--line);
+      box-shadow: -20px 0 40px rgba(0, 0, 0, 0.28);
+      transform: translateX(110%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .25s ease, opacity .25s ease;
+      z-index: 40;
+    }
+    .topbar nav.is-open {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .topbar nav a {
+      width: 100%;
+      padding: .45rem 0;
+      font-size: 1.05rem;
+    }
+    .topbar nav a::after {
+      bottom: .1rem;
+    }
+    .nav-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 11, 18, 0.42);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+      z-index: 30;
+    }
+    .nav-backdrop.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
   @media (max-width: 480px) {
     .side { grid-template-columns: 1fr; }
@@ -282,16 +364,32 @@
 
 <header class="topbar">
   <div class="wrap">
-    <a class="mark" href="#top" aria-label="Adrian Aurel Patanao, back to top">AAP</a>
-    <nav aria-label="Sections">
+    <a class="mark" href="#top" aria-label="Adrian Aurel Patanao, back to top">
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path class="frame" d="M12 23.5c0-6.1 4.9-11 11-11h8.5c6.1 0 11 4.9 11 11V28c0 6.1-4.9 11-11 11h-8.5c-6.1 0-11-4.9-11-11v-4.5Z"/>
+        <path class="frame" d="M41 23.5c0-6.1 4.9-11 11-11h1.5c6.1 0 11 4.9 11 11V28c0 6.1-4.9 11-11 11H52c-6.1 0-11-4.9-11-11v-4.5Z"/>
+        <path class="bridge" d="M28 32h8"/>
+        <path class="bridge" d="M7 32H2M62 32h-5"/>
+      </svg>
+    </a>
+    <span class="mark-name" aria-hidden="true">Adrian Aurel Patanao</span>
+    <nav id="topbar-nav" aria-label="Sections">
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
       <a href="#certifications">Certifications</a>
       <a href="#contact">Contact</a>
     </nav>
+    <div class="nav-backdrop" aria-hidden="true"></div>
   </div>
 </header>
+
+<!-- Lives outside the header so it can float over the page (the header's backdrop-filter would otherwise trap position: fixed) -->
+<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="topbar-nav" aria-label="Toggle navigation">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
 
 <main id="top">
   <section class="hero" aria-labelledby="name">
@@ -464,8 +562,10 @@
 
 <script>
   (() => {
-    const topbar = document.querySelector('.topbar');
     const topbarLinks = [...document.querySelectorAll('.topbar nav a')];
+    const nav = document.querySelector('.topbar nav');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const backdrop = document.querySelector('.nav-backdrop');
     const sections = topbarLinks
       .map(link => {
         const target = document.querySelector(link.getAttribute('href'));
@@ -474,14 +574,17 @@
       .filter(Boolean);
 
     const offsetForScroll = () => {
-      const topbarHeight = topbar ? topbar.getBoundingClientRect().height : 64;
-      return topbarHeight + 16;
+      const topbar = document.querySelector('.topbar');
+      return topbar ? topbar.getBoundingClientRect().height + 16 : 64;
     };
 
-    const setTopbarState = () => {
-      if (!topbar) return;
-      const scrolled = window.scrollY > 18;
-      topbar.classList.toggle('scrolled', scrolled);
+    const setMenuOpen = open => {
+      if (!nav || !menuToggle || !backdrop) return;
+      nav.classList.toggle('is-open', open);
+      menuToggle.classList.toggle('is-open', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      backdrop.classList.toggle('is-visible', open);
+      document.body.style.overflow = open ? 'hidden' : '';
     };
 
     const setActiveLink = (hash, updateUrl = false) => {
@@ -499,6 +602,13 @@
       }
     };
 
+    menuToggle?.addEventListener('click', () => {
+      const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+      setMenuOpen(!isOpen);
+    });
+
+    backdrop?.addEventListener('click', () => setMenuOpen(false));
+
     topbarLinks.forEach(link => {
       link.addEventListener('click', event => {
         const href = link.getAttribute('href');
@@ -513,6 +623,8 @@
           top,
           behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
         });
+
+        setMenuOpen(false);
 
         if (history.pushState) {
           history.pushState(null, '', href);
@@ -539,11 +651,26 @@
     }, observerOptions);
 
     sections.forEach(({ target }) => sectionObserver.observe(target));
-    window.addEventListener('scroll', setTopbarState, { passive: true });
-    setTopbarState();
+
+    // Show the full name beside the icon once the first section (hero) has scrolled under the topbar
+    const hero = document.querySelector('.hero');
+    const markName = document.querySelector('.mark-name');
+    const topbarEl = document.querySelector('.topbar');
+    if (hero && markName && topbarEl) {
+      const heroObserver = new IntersectionObserver(([entry]) => {
+        markName.classList.toggle('is-visible', !entry.isIntersecting);
+      }, { rootMargin: `-${topbarEl.offsetHeight}px 0px 0px 0px` });
+      heroObserver.observe(hero);
+    }
 
     const initialHash = window.location.hash || '#about';
     setActiveLink(initialHash, false);
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 820) {
+        setMenuOpen(false);
+      }
+    });
   })();
 </script>
 </body>
