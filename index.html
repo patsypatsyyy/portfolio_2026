@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adrian Aurel Patanao | SAP Full-Stack Developer</title>
+<meta name="description" content="Portfolio of Adrian Aurel Patanao, an SAP full-stack developer and certified SAP BTP Administrator and Integration Developer based in the Philippines.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F6F8FB;
+    --surface: #FFFFFF;
+    --ink: #0E1A2B;
+    --muted: #56657A;
+    --line: #DCE3EC;
+    --accent: #0A6ED1;
+    --accent-ink: #FFFFFF;
+    --soft: #E7F0FB;
+    --font: "Hanken Grotesk", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0B1220;
+      --surface: #111A2C;
+      --ink: #E8EEF7;
+      --muted: #97A7BD;
+      --line: #223047;
+      --accent: #5AA2F0;
+      --accent-ink: #0B1220;
+      --soft: #12233D;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B1220;
+    --surface: #111A2C;
+    --ink: #E8EEF7;
+    --muted: #97A7BD;
+    --line: #223047;
+    --accent: #5AA2F0;
+    --accent-ink: #0B1220;
+    --soft: #12233D;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--accent); color: var(--accent-ink);
+    padding: .6rem 1rem; z-index: 10;
+  }
+  .skip:focus { left: 1rem; top: 1rem; }
+
+  /* Top bar */
+  .topbar { padding: 1.25rem 0; }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .mark {
+    display: inline-grid; place-items: center;
+    width: 2.5rem; height: 2.5rem; border-radius: 10px;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 700; font-size: .95rem; letter-spacing: .02em; text-decoration: none;
+  }
+  .topbar nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .topbar nav a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: .98rem; }
+  .topbar nav a:hover { color: var(--ink); }
+
+  /* Hero */
+  .hero { padding: 3.5rem 0 4.5rem; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3.5rem; align-items: center; }
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 5.2vw, 3.9rem);
+    line-height: 1.05; letter-spacing: -0.025em; font-weight: 700;
+  }
+  .hero .role { margin: 1rem 0 0; font-size: 1.35rem; line-height: 1.4; font-weight: 500; color: var(--muted); }
+  .hero .lead { margin: 1.5rem 0 0; max-width: 34rem; }
+  .actions { display: flex; gap: .875rem; flex-wrap: wrap; margin-top: 2rem; }
+  .btn {
+    display: inline-block; padding: .8rem 1.35rem; border-radius: 10px;
+    font-weight: 600; font-size: 1rem; text-decoration: none;
+    border: 1.5px solid var(--accent);
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-quiet { background: transparent; color: var(--accent); }
+  .btn-quiet:hover { background: var(--soft); }
+
+  /* Stack diagram: the one memorable element */
+  .stack {
+    margin: 0; padding: 1.75rem 1.25rem 1.25rem;
+    border: 1.5px dashed var(--line); border-radius: 16px;
+    background: var(--surface); position: relative;
+  }
+  .stack-title {
+    position: absolute; top: -.85rem; left: 1.25rem;
+    background: var(--bg); padding: 0 .6rem;
+    font-size: .9rem; font-weight: 600; color: var(--muted);
+  }
+  .layers { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .layer {
+    position: relative;
+    padding: .85rem 1rem .85rem 1.1rem;
+    background: var(--bg);
+    border: 1px solid var(--line); border-left: 4px solid var(--accent);
+    border-radius: 8px;
+  }
+  .layer:not(:last-child)::after {
+    content: ""; position: absolute; left: 50%; bottom: -1rem;
+    width: 1.5px; height: 1rem; background: var(--line);
+  }
+  .layer strong { display: block; font-size: 1.02rem; line-height: 1.3; }
+  .layer span { display: block; font-size: .92rem; line-height: 1.4; color: var(--muted); margin-top: .1rem; }
+  .side { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  .side div {
+    padding: .75rem .9rem; border-radius: 8px;
+    background: var(--soft); border: 1px solid transparent;
+  }
+  .side strong { display: block; font-size: .95rem; line-height: 1.3; }
+  .side span { display: block; font-size: .86rem; line-height: 1.4; color: var(--muted); margin-top: .1rem; }
+  .stack figcaption.note { margin-top: 1rem; font-size: .88rem; color: var(--muted); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .stack .layer, .stack .side div {
+      opacity: 0;
+      animation: rise .6s ease-out forwards;
+      animation-delay: calc(var(--i) * 150ms + 250ms);
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+
+  /* Content sections */
+  main section.block { padding: 3.5rem 0; border-top: 1px solid var(--line); }
+  main section.block .wrap { display: grid; grid-template-columns: 200px 1fr; gap: 2.5rem; }
+  .block h2 { margin: 0; font-size: 1.35rem; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; }
+  .block p { margin: 0 0 1rem; max-width: 40rem; }
+  .block p:last-child { margin-bottom: 0; }
+
+  .facts { margin: 1.75rem 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 40rem; }
+  .facts dt { font-size: .9rem; color: var(--muted); }
+  .facts dd { margin: .15rem 0 0; font-weight: 600; line-height: 1.4; }
+
+  .skills { margin: 0; }
+  .skills .row { display: grid; grid-template-columns: 190px 1fr; gap: 1.5rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .skills .row:first-child { padding-top: 0; }
+  .skills .row:last-child { border-bottom: 0; padding-bottom: 0; }
+  .skills dt { font-weight: 600; }
+  .skills dd { margin: 0; color: var(--muted); }
+
+  .job + .job { margin-top: 2.5rem; }
+  .job-head { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: baseline; }
+  .job h3 { margin: 0; font-size: 1.15rem; line-height: 1.35; font-weight: 700; }
+  .job .dates { color: var(--muted); font-size: .95rem; }
+  .job .where { margin: .1rem 0 .9rem; color: var(--muted); }
+  .job ul { margin: 0; padding-left: 1.15rem; max-width: 42rem; }
+  .job li { margin-bottom: .5rem; padding-left: .2rem; }
+  .job li::marker { color: var(--accent); }
+
+  .certs { list-style: none; margin: 0; padding: 0; }
+  .certs li {
+    display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: baseline;
+    padding: .9rem 0; border-bottom: 1px solid var(--line);
+  }
+  .certs li:first-child { padding-top: 0; }
+  .certs .name { font-weight: 600; line-height: 1.4; }
+  .certs .issuer { display: block; font-size: .92rem; color: var(--muted); font-weight: 400; }
+  .certs .valid { text-align: right; font-size: .95rem; font-weight: 500; white-space: nowrap; }
+  .certs .valid small { display: block; font-size: .85rem; color: var(--muted); font-weight: 400; }
+
+  details.more { margin-top: 1.5rem; }
+  details.more summary {
+    cursor: pointer; font-weight: 600; color: var(--accent);
+    padding: .4rem 0; width: fit-content;
+  }
+  details.more ul { list-style: none; margin: .75rem 0 0; padding: 0; }
+  details.more li {
+    display: grid; grid-template-columns: 1fr auto; gap: 1.5rem;
+    padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .98rem;
+  }
+  details.more li span { color: var(--muted); white-space: nowrap; }
+
+  .edu h3 { margin: 0; font-size: 1.15rem; line-height: 1.35; font-weight: 700; }
+  .edu p { color: var(--muted); }
+
+  .contact-band { padding: 4rem 0; background: var(--soft); border-top: 1px solid var(--line); }
+  .contact-band .wrap { display: grid; grid-template-columns: 200px 1fr; gap: 2.5rem; }
+  .contact-band h2 { margin: 0; font-size: 1.35rem; line-height: 1.3; font-weight: 700; }
+  .contact-band p { margin: 0 0 1.5rem; max-width: 34rem; }
+
+  footer { padding: 1.75rem 0 2.5rem; color: var(--muted); font-size: .92rem; }
+
+  @media (max-width: 820px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 3rem; }
+    main section.block .wrap, .contact-band .wrap { grid-template-columns: 1fr; gap: 1.25rem; }
+    .facts { grid-template-columns: 1fr; gap: 1rem; }
+    .skills .row { grid-template-columns: 1fr; gap: .25rem; }
+  }
+  @media (max-width: 480px) {
+    .side { grid-template-columns: 1fr; }
+    .certs li, details.more li { grid-template-columns: 1fr; gap: .25rem; }
+    .certs .valid { text-align: left; }
+    .topbar nav { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#about">Skip to content</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Adrian Aurel Patanao, back to top">AAP</a>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="name">
+    <div class="wrap">
+      <div>
+        <h1 id="name">Adrian Aurel Patanao</h1>
+        <p class="role">SAP full-stack developer building cloud applications on SAP BTP.</p>
+        <p class="lead">I work across the whole stack: UI5 and Fiori front ends, CAP services in Node.js or Java, and HANA Cloud data models. I'm also certified in SAP BTP administration and SAP Integration Suite.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/patoypatuyy" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
+          <a class="btn btn-quiet" href="#experience">See my experience</a>
+        </div>
+      </div>
+
+      <figure class="stack" aria-label="Diagram of the SAP stack Adrian builds on: SAPUI5 and Fiori front end, SAP CAP services, and SAP HANA Cloud data, with SAP Integration Suite and SAP Analytics Cloud alongside.">
+        <figcaption class="stack-title">SAP Business Technology Platform</figcaption>
+        <ul class="layers">
+          <li class="layer" style="--i:0"><strong>SAPUI5 and Fiori</strong><span>Front end: UI5 Freestyle apps</span></li>
+          <li class="layer" style="--i:1"><strong>SAP CAP (Node.js or Java)</strong><span>Services and business logic</span></li>
+          <li class="layer" style="--i:2"><strong>SAP HANA Cloud</strong><span>Data models and calculation views</span></li>
+        </ul>
+        <div class="side">
+          <div style="--i:3"><strong>Integration Suite</strong><span>Integration flows and APIs</span></div>
+          <div style="--i:4"><strong>Analytics Cloud</strong><span>Stories built on HANA views</span></div>
+        </div>
+        <figcaption class="note">The stack I build on and administer day to day.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="about" aria-labelledby="about-h">
+    <div class="wrap">
+      <h2 id="about-h">About</h2>
+      <div>
+        <p>I build end-to-end cloud solutions that streamline complex business processes. My foundation is custom UI5 Freestyle front ends and backend services on the SAP Cloud Application Programming (CAP) model.</p>
+        <p>I pair that with hands-on BTP administration, integration flows, and advanced database work, from HANA Cloud calculation views for Analytics Cloud stories to API integrations and cloud infrastructure. The goal is always the same: data that moves securely and efficiently across the whole ecosystem.</p>
+        <dl class="facts">
+          <div><dt>Currently</dt><dd>SAP Developer at AppcentricPH</dd></div>
+          <div><dt>Based in</dt><dd>Bacoor, Calabarzon, Philippines</dd></div>
+          <div><dt>Education</dt><dd>BS Computer Engineering, Bicol University</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="skills" aria-labelledby="skills-h">
+    <div class="wrap">
+      <h2 id="skills-h">Skills</h2>
+      <dl class="skills">
+        <div class="row"><dt>Development</dt><dd>SAP CAP (Node.js and Java), SAPUI5 and UI5 Freestyle, SAP Fiori, SAP Build Apps and Process Automation</dd></div>
+        <div class="row"><dt>Platform and data</dt><dd>SAP BTP administration, SAP HANA Cloud (calculation views), SAP Analytics Cloud, SAP S/4HANA Cloud clean core</dd></div>
+        <div class="row"><dt>Integration and automation</dt><dd>SAP Integration Suite (CPI), API integration, SAP Cloud Identity Services, UiPath agentic automation</dd></div>
+        <div class="row"><dt>Also</dt><dd>Python (SAP HANA Machine Learning Client), Kotlin, Terraform on SAP BTP, Git and GitHub</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="block" id="experience" aria-labelledby="exp-h">
+    <div class="wrap">
+      <h2 id="exp-h">Experience</h2>
+      <div>
+        <article class="job">
+          <div class="job-head">
+            <h3>SAP Developer, AppcentricPH</h3>
+            <span class="dates">Mar 2024 – Present</span>
+          </div>
+          <p class="where">Pasig, National Capital Region, Philippines</p>
+          <ul>
+            <li>Design and build full-stack SAP cloud applications with SAPUI5 front ends and SAP CAP backends (Node.js and Java) on SAP BTP.</li>
+            <li>Create and modify data models and services on SAP HANA Cloud, including calculation views used by SAP Analytics Cloud stories.</li>
+            <li>Administer SAP BTP, manage cloud infrastructure, and design integration flows and API integrations with SAP Integration Suite (CPI).</li>
+            <li>Deliver user stories for enterprise cloud applications that streamline complex business processes.</li>
+          </ul>
+        </article>
+
+        <article class="job">
+          <div class="job-head">
+            <h3>Software Developer Intern, Erovoutika</h3>
+            <span class="dates">Jul 2022 – Aug 2022</span>
+          </div>
+          <p class="where">Makati, National Capital Region, Philippines</p>
+          <ul>
+            <li>Developed the front end of a personal project in Kotlin, using Git and GitHub for source control.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="certifications" aria-labelledby="cert-h">
+    <div class="wrap">
+      <h2 id="cert-h">Certifications</h2>
+      <div>
+        <ul class="certs">
+          <li>
+            <span class="name">SAP Certified: SAP BTP Administrator<span class="issuer">SAP</span></span>
+            <span class="valid">Valid until Mar 2027<small>Issued Feb 2026</small></span>
+          </li>
+          <li>
+            <span class="name">SAP Certified: Backend Developer, SAP Cloud Application Programming Model<span class="issuer">SAP</span></span>
+            <span class="valid">Valid until Jun 2027<small>Issued Jun 2026</small></span>
+          </li>
+          <li>
+            <span class="name">SAP Certified: Integration Developer<span class="issuer">SAP</span></span>
+            <span class="valid">Valid until Aug 2027<small>Issued Aug 2026</small></span>
+          </li>
+          <li>
+            <span class="name">SAP Certified Associate: Low-Code/No-Code Developer, SAP Build<span class="issuer">SAP</span></span>
+            <span class="valid">Valid until Nov 2027<small>Issued Oct 2025</small></span>
+          </li>
+          <li>
+            <span class="name">UiPath Certified Professional Agentic Automation Associate<span class="issuer">UiPath</span></span>
+            <span class="valid">Valid until Jan 2029<small>Issued Jan 2026</small></span>
+          </li>
+          <li>
+            <span class="name">UiPath Academy Agentic Automation Developer Associate Training<span class="issuer">UiPath</span></span>
+            <span class="valid">Valid until Dec 2027<small>Issued Dec 2025</small></span>
+          </li>
+        </ul>
+
+        <details class="more">
+          <summary>Show 12 more SAP courses and records of achievement</summary>
+          <ul>
+            <li>SAP Cloud Platform Integration Service Overview <span>Aug 2026</span></li>
+            <li>Learning the Basics of SAP Fiori <span>Mar 2026</span></li>
+            <li>Getting Started with Terraform on SAP BTP <span>Feb 2026</span></li>
+            <li>Develop Extensions Using SAP Build Apps <span>Oct 2025</span></li>
+            <li>Develop and Automate with SAP Build <span>Oct 2025</span></li>
+            <li>Developing AI Models with the Python Machine Learning Client for SAP HANA <span>Oct 2025</span></li>
+            <li>Introducing AI Fundamentals <span>Oct 2025</span></li>
+            <li>SAP BTP Partner Hands-On Excellence Program: SAP Business AI <span>Sep 2025</span></li>
+            <li>Introducing SAP Cloud Identity Services <span>Jul 2025</span></li>
+            <li>Getting Started with SAP Cloud Application Programming Model <span>May 2025</span></li>
+            <li>Discovering SAP Business Technology Platform <span>Apr 2025</span></li>
+            <li>Managing Clean Core for SAP S/4HANA Cloud <span>Apr 2025</span></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="block edu" id="education" aria-labelledby="edu-h">
+    <div class="wrap">
+      <h2 id="edu-h">Education</h2>
+      <div>
+        <div class="job-head">
+          <h3>Bicol University</h3>
+          <span class="dates" style="color:var(--muted);font-size:.95rem">2019 – 2023</span>
+        </div>
+        <p>Bachelor of Science in Computer Engineering. Activities: Thesis.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-band" id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <h2 id="contact-h">Contact</h2>
+      <div>
+        <p>For opportunities, questions, or a conversation about SAP development and integration, send me a message on LinkedIn.</p>
+        <a class="btn btn-primary" href="https://www.linkedin.com/in/patoypatuyy" target="_blank" rel="noopener noreferrer">Message on LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Adrian Aurel Patanao. Bacoor, Calabarzon, Philippines.</div>
+</footer>
+</body>
+</html>
