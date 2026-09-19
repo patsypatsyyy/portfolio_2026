@@ -79,30 +79,49 @@
     top: 0;
     z-index: 20;
     padding: 1.25rem 0;
+    background: transparent;
+    border-bottom: 1px solid transparent;
     backdrop-filter: blur(10px);
+    transition: padding .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
   }
-  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .topbar::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(10,110,209,.08) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity .25s ease;
+    pointer-events: none;
+  }
+  .topbar .wrap {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    transition: transform .25s ease;
+  }
+  .topbar.scrolled {
+    padding: .7rem 0;
+    background: color-mix(in srgb, var(--surface) 84%, transparent);
+    border-color: var(--line);
+    box-shadow: 0 12px 24px rgba(14, 26, 43, .08);
+  }
+  .topbar.scrolled::before { opacity: 1; }
+  .topbar.scrolled .wrap { transform: translateY(0); }
   .mark {
     display: inline-grid; place-items: center;
-    width: 2.75rem; height: 2.75rem; border-radius: 12px;
-    background: var(--soft); color: var(--accent);
-    border: 1px solid var(--line);
-    text-decoration: none;
-    box-shadow: 0 8px 20px rgba(10, 110, 209, .08);
+    width: 2.5rem; height: 2.5rem; border-radius: 10px;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 700; font-size: .95rem; letter-spacing: .02em; text-decoration: none;
+    box-shadow: 0 12px 24px rgba(10,110,209,.18);
+    transition: transform .25s ease, box-shadow .25s ease, border-radius .25s ease;
   }
-  .mark svg {
-    width: 1.55rem; height: 1.55rem; display: block;
-  }
-  .mark svg .frame {
-    fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
-  }
-  .mark svg .bridge {
-    fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round;
+  .topbar.scrolled .mark {
+    transform: scale(.92) rotate(-4deg);
+    border-radius: 8px;
+    box-shadow: 0 8px 18px rgba(10,110,209,.16);
   }
   .topbar nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
   .topbar nav a {
     position: relative; color: var(--muted); text-decoration: none; font-weight: 500; font-size: .98rem;
-    transition: color .2s ease, transform .2s ease;
+    transition: color .2s ease, transform .2s ease, letter-spacing .2s ease;
   }
   .topbar nav a::after {
     content: ""; position: absolute; left: 0; bottom: -.32rem; width: 100%; height: 2px;
@@ -111,6 +130,7 @@
   }
   .topbar nav a:hover, .topbar nav a.is-active { color: var(--ink); transform: translateY(-1px); }
   .topbar nav a:hover::after, .topbar nav a.is-active::after { transform: scaleX(1); opacity: 1; }
+  .topbar.scrolled nav a { letter-spacing: .01em; }
 
   @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
@@ -262,14 +282,7 @@
 
 <header class="topbar">
   <div class="wrap">
-    <a class="mark" href="#top" aria-label="Adrian Aurel Patanao, back to top">
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-        <path class="frame" d="M12 23.5c0-6.1 4.9-11 11-11h8.5c6.1 0 11 4.9 11 11V28c0 6.1-4.9 11-11 11h-8.5c-6.1 0-11-4.9-11-11v-4.5Z"/>
-        <path class="frame" d="M41 23.5c0-6.1 4.9-11 11-11h1.5c6.1 0 11 4.9 11 11V28c0 6.1-4.9 11-11 11H52c-6.1 0-11-4.9-11-11v-4.5Z"/>
-        <path class="bridge" d="M28 32h8"/>
-        <path class="bridge" d="M7 32H2M62 32h-5"/>
-      </svg>
-    </a>
+    <a class="mark" href="#top" aria-label="Adrian Aurel Patanao, back to top">AAP</a>
     <nav aria-label="Sections">
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
@@ -451,6 +464,7 @@
 
 <script>
   (() => {
+    const topbar = document.querySelector('.topbar');
     const topbarLinks = [...document.querySelectorAll('.topbar nav a')];
     const sections = topbarLinks
       .map(link => {
@@ -460,8 +474,14 @@
       .filter(Boolean);
 
     const offsetForScroll = () => {
-      const topbar = document.querySelector('.topbar');
-      return topbar ? topbar.getBoundingClientRect().height + 16 : 64;
+      const topbarHeight = topbar ? topbar.getBoundingClientRect().height : 64;
+      return topbarHeight + 16;
+    };
+
+    const setTopbarState = () => {
+      if (!topbar) return;
+      const scrolled = window.scrollY > 18;
+      topbar.classList.toggle('scrolled', scrolled);
     };
 
     const setActiveLink = (hash, updateUrl = false) => {
@@ -519,6 +539,8 @@
     }, observerOptions);
 
     sections.forEach(({ target }) => sectionObserver.observe(target));
+    window.addEventListener('scroll', setTopbarState, { passive: true });
+    setTopbarState();
 
     const initialHash = window.location.hash || '#about';
     setActiveLink(initialHash, false);
