@@ -44,7 +44,11 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.25rem;
+    -webkit-text-size-adjust: 100%;
+  }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
   body {
@@ -70,17 +74,47 @@
   .skip:focus { left: 1rem; top: 1rem; }
 
   /* Top bar */
-  .topbar { padding: 1.25rem 0; }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding: 1.25rem 0;
+    backdrop-filter: blur(10px);
+  }
   .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
   .mark {
     display: inline-grid; place-items: center;
-    width: 2.5rem; height: 2.5rem; border-radius: 10px;
-    background: var(--accent); color: var(--accent-ink);
-    font-weight: 700; font-size: .95rem; letter-spacing: .02em; text-decoration: none;
+    width: 2.75rem; height: 2.75rem; border-radius: 12px;
+    background: var(--soft); color: var(--accent);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(10, 110, 209, .08);
+  }
+  .mark svg {
+    width: 1.55rem; height: 1.55rem; display: block;
+  }
+  .mark svg .frame {
+    fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .mark svg .bridge {
+    fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round;
   }
   .topbar nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-  .topbar nav a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: .98rem; }
-  .topbar nav a:hover { color: var(--ink); }
+  .topbar nav a {
+    position: relative; color: var(--muted); text-decoration: none; font-weight: 500; font-size: .98rem;
+    transition: color .2s ease, transform .2s ease;
+  }
+  .topbar nav a::after {
+    content: ""; position: absolute; left: 0; bottom: -.32rem; width: 100%; height: 2px;
+    border-radius: 999px; background: var(--accent); transform: scaleX(0); transform-origin: left; opacity: 0;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  .topbar nav a:hover, .topbar nav a.is-active { color: var(--ink); transform: translateY(-1px); }
+  .topbar nav a:hover::after, .topbar nav a.is-active::after { transform: scaleX(1); opacity: 1; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
 
   /* Hero */
   .hero { padding: 3.5rem 0 4.5rem; }
@@ -228,7 +262,14 @@
 
 <header class="topbar">
   <div class="wrap">
-    <a class="mark" href="#top" aria-label="Adrian Aurel Patanao, back to top">AAP</a>
+    <a class="mark" href="#top" aria-label="Adrian Aurel Patanao, back to top">
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path class="frame" d="M12 23.5c0-6.1 4.9-11 11-11h8.5c6.1 0 11 4.9 11 11V28c0 6.1-4.9 11-11 11h-8.5c-6.1 0-11-4.9-11-11v-4.5Z"/>
+        <path class="frame" d="M41 23.5c0-6.1 4.9-11 11-11h1.5c6.1 0 11 4.9 11 11V28c0 6.1-4.9 11-11 11H52c-6.1 0-11-4.9-11-11v-4.5Z"/>
+        <path class="bridge" d="M28 32h8"/>
+        <path class="bridge" d="M7 32H2M62 32h-5"/>
+      </svg>
+    </a>
     <nav aria-label="Sections">
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
@@ -252,7 +293,7 @@
         </div>
       </div>
 
-      <figure class="stack" aria-label="Diagram of the SAP stack Adrian builds on: SAPUI5 and Fiori front end, SAP CAP services, and SAP HANA Cloud data, with SAP Integration Suite and SAP Analytics Cloud alongside.">
+      <figure class="stack" aria-label="Diagram of the SAP stack Adrian builds on: SAPUI5 and Fiori front end, SAP CAP services, SAP HANA Cloud data, SAP Integration Suite, with SAP BTP administration and security alongside.">
         <figcaption class="stack-title">SAP Business Technology Platform</figcaption>
         <ul class="layers">
           <li class="layer" style="--i:0"><strong>SAPUI5 and Fiori</strong><span>Front end: UI5 Freestyle apps</span></li>
@@ -261,7 +302,7 @@
         </ul>
         <div class="side">
           <div style="--i:3"><strong>Integration Suite</strong><span>Integration flows and APIs</span></div>
-          <div style="--i:4"><strong>Analytics Cloud</strong><span>Stories built on HANA views</span></div>
+          <div style="--i:4"><strong>BTP Administration</strong><span>Subaccounts, users, and security</span></div>
         </div>
         <figcaption class="note">The stack I build on and administer day to day.</figcaption>
       </figure>
@@ -290,7 +331,7 @@
         <div class="row"><dt>Development</dt><dd>SAP CAP (Node.js and Java), SAPUI5 and UI5 Freestyle, SAP Fiori, SAP Build Apps and Process Automation</dd></div>
         <div class="row"><dt>Platform and data</dt><dd>SAP BTP administration, SAP HANA Cloud</dd></div>
         <div class="row"><dt>Integration and automation</dt><dd>SAP Integration Suite (CPI), API integration, SAP Cloud Identity Services, UiPath agentic automation</dd></div>
-        <div class="row"><dt>Also</dt><dd>Python (SAP HANA Machine Learning Client), Kotlin, Terraform on SAP BTP, Git and GitHub</dd></div>
+        <div class="row"><dt>Also</dt><dd>Python, Kotlin, Terraform on SAP BTP, Git and GitHub</dd></div>
       </dl>
     </div>
   </section>
@@ -396,8 +437,9 @@
     <div class="wrap">
       <h2 id="contact-h">Contact</h2>
       <div>
-        <p>For opportunities, questions, or a conversation about SAP development and integration, send me a message on LinkedIn.</p>
+        <p>For opportunities, questions, or a conversation about SAP development and integration, send me a message on LinkedIn or email me directly.</p>
         <a class="btn btn-primary" href="https://www.linkedin.com/in/patsypatsyyy" target="_blank" rel="noopener noreferrer">Message on LinkedIn</a>
+        <a class="btn btn-secondary" href="mailto:adrianaurelpatanao@gmail.com">Email Me</a>
       </div>
     </div>
   </section>
@@ -406,5 +448,81 @@
 <footer>
   <div class="wrap">© 2026 Adrian Aurel Patanao. Bacoor, Calabarzon, Philippines.</div>
 </footer>
+
+<script>
+  (() => {
+    const topbarLinks = [...document.querySelectorAll('.topbar nav a')];
+    const sections = topbarLinks
+      .map(link => {
+        const target = document.querySelector(link.getAttribute('href'));
+        return target ? { link, target } : null;
+      })
+      .filter(Boolean);
+
+    const offsetForScroll = () => {
+      const topbar = document.querySelector('.topbar');
+      return topbar ? topbar.getBoundingClientRect().height + 16 : 64;
+    };
+
+    const setActiveLink = (hash, updateUrl = false) => {
+      topbarLinks.forEach(link => {
+        const isActive = link.getAttribute('href') === hash;
+        link.classList.toggle('is-active', isActive);
+        link.setAttribute('aria-current', isActive ? 'page' : 'false');
+      });
+
+      if (updateUrl && history.replaceState) {
+        const currentHash = window.location.hash || '';
+        if (currentHash !== hash) {
+          history.replaceState(null, '', hash);
+        }
+      }
+    };
+
+    topbarLinks.forEach(link => {
+      link.addEventListener('click', event => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        const target = document.querySelector(href);
+        if (!target) return;
+
+        event.preventDefault();
+        const top = target.getBoundingClientRect().top + window.scrollY - offsetForScroll();
+
+        window.scrollTo({
+          top,
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+        });
+
+        if (history.pushState) {
+          history.pushState(null, '', href);
+        }
+        setActiveLink(href, false);
+      });
+    });
+
+    const observerOptions = {
+      root: null,
+      threshold: 0.2,
+      rootMargin: '-20% 0px -58% 0px'
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (visible) {
+        const hash = '#' + visible.target.id;
+        setActiveLink(hash, true);
+      }
+    }, observerOptions);
+
+    sections.forEach(({ target }) => sectionObserver.observe(target));
+
+    const initialHash = window.location.hash || '#about';
+    setActiveLink(initialHash, false);
+  })();
+</script>
 </body>
 </html>
